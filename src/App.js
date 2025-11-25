@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Components/Header";
+import List from "./Components/list";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [order, SetOrder] = useState("");
+  const [orders, SetOrders] = useState(() => {
+  const saved = localStorage.getItem("orders");
+  return saved ? JSON.parse(saved) : [];
+});
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <List
+        order={order}
+        SetOrder={SetOrder}
+        orders={orders}
+        SetOrders={SetOrders}
+      />
+      {useEffect(() => {
+        localStorage.setItem("orders", JSON.stringify(orders));
+      }, [orders])}
     </div>
   );
 }
